@@ -34,8 +34,8 @@
             <artifactId>scalaj-http_2.11</artifactId>
             <version>2.4.2</version>
         </dependency>
-
     </dependencies>
+
     <build>
         <plugins>
             <!-- Maven Scala plugin -->
@@ -57,7 +57,6 @@
                 </configuration>
             </plugin>
 
-
             <!-- Maven JAR plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -73,18 +72,22 @@
                 </configuration>
             </plugin>
         </plugins>
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-            </resource>
-        </resources>
+
+        <!-- Moved repositories inside the project tag -->
+        <repositories>
+            <repository>
+                <id>sonatype-oss-public</id>
+                <url>https://oss.sonatype.org/content/groups/public/</url>
+                <releases>true</releases>
+                <snapshots>true</snapshots>
+            </repository>
+        </repositories>
     </build>
-    <repositories>
-        <repository>
-            <id>sonatype-oss-public</id>
-            <url>https://oss.sonatype.org/content/groups/public/</url>
-            <releases>true</releases>
-            <snapshots>true</snapshots>
-        </repository>
-    </repositories>
+
+    <resources>
+        <resource>
+            <directory>src/main/resources</directory>
+        </resource>
+    </resources>
+
 </project>
