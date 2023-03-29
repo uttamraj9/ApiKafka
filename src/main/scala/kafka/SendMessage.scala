@@ -8,6 +8,6 @@ object SendMessage {
     val url = "https://covid-193.p.rapidapi.com/statistics"
     val country = "UK"
     val sc = new SendAPIToKafka()
-    sc.readFromApiAndProduceToKafka(topic, brokers, headers, url, country)
+    sc.readFromApiAndProduceToKafka()
   }
 }

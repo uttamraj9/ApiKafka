@@ -1,37 +1,20 @@
 package kafka
 
-import org.apache.kafka.clients.producer._
-import org.apache.log4j.PropertyConfigurator
-import scalaj.http._
-
+import com.github.blemale.requests._
+import com.github.blemale.requests.dsl._
 import java.util.Properties
 class SendAPIToKafka {
-  val logProps = new Properties()
-  logProps.load(getClass.getClassLoader.getResourceAsStream("log4j.properties"))
-  PropertyConfigurator.configure(logProps)
-  def readFromApiAndProduceToKafka(topic: String, brokers: String, headers: Map[String, String], url: String, country: String): Unit = {
-    val response = Http(url)
+  def readFromApiAndProduceToKafka(): Unit = {
+    val headers = Map(
+      "X-RapidAPI-Host" -> "covid-193.p.rapidapi.com",
+      "X-RapidAPI-Key" -> "9a99f8903cmsh9e882a8f6e4b0cbp1f2fefjsn53f7c6e89019"
+    )
+
+    val response = get("https://covid-193.p.rapidapi.com/statistics")
+      .params("country" -> "UK")
       .headers(headers)
-      .param("country", country)
-      .asString
+      .send()
 
-    if (response.isSuccess) {
-      val data = response.body
-
-      val props = new Properties()
-      props.put("bootstrap.servers", brokers)
-      props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer")
-      props.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer")
-
-      val producer = new KafkaProducer[String, String](props)
-
-      val message = new ProducerRecord[String, String](topic, data)
-
-      producer.send(message)
-
-      producer.close()
-    } else {
-      println(s"Error: ${response.code} ${response.statusLine}")
-    }
+    println(response.text)
   }
 }
