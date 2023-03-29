@@ -59,7 +59,7 @@ object SendAPIToKafka {
       .writeStream
       .format("kafka")
       .option("kafka.bootstrap.servers", "ip-172-31-3-80.eu-west-2.compute.internal:9092")
-      .option("topic", "covid_data")
+      .option("topic", "topic1")
       .option("checkpointLocation", "/tmp/checkpoints")
       .trigger(Trigger.ProcessingTime("30 seconds"))
       .start()
