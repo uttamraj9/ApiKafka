@@ -63,7 +63,7 @@
                     <!-- other configuration options -->
                 </configuration>
             </plugin>
-            </plugin>
+
 
             <!-- Maven JAR plugin -->
             <plugin>
