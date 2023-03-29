@@ -87,17 +87,6 @@
     </build>
     <repositories>
         <repository>
-            <id>sonatype-oss-public</id>
-            <url>https://oss.sonatype.org/content/groups/public</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-                <updatePolicy>always</updatePolicy>
-            </snapshots>
-        </repository>
-        <repository>
             <id>central</id>
             <name>Maven Central Repository</name>
             <url>https://repo.maven.apache.org/maven2</url>
