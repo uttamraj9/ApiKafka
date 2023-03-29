@@ -1,12 +1,10 @@
-package kafka
 import org.apache.spark.sql.functions._
+import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.streaming.Trigger
-class SendAPIToKafka {
-  def readFromApiAndProduceToKafka(): Unit = {
-    import org.apache.spark.sql.SparkSession
-    import org.apache.spark.sql.functions._
-    import org.apache.spark.sql.types._
+import org.apache.spark.sql.types._
 
+object SendAPIToKafka {
+  def main(args: Array[String]): Unit = {
     val spark = SparkSession.builder()
       .appName("API Reader")
       .master("local[*]")
@@ -21,10 +19,9 @@ class SendAPIToKafka {
     val options = Map(
       "delimiter" -> ":",
       "url" -> endpoint,
-      "header_x_rapidapi" -> s"${headers("X-RapidAPI-Host")}: ${headers("X-RapidAPI-Key")}"
+      "header_x_rapidapi" -> s"${headers("X-RapidAPI-Host")}:${headers("X-RapidAPI-Key")}"
     )
 
-    // Define the schema for the COVID-19 statistics data
     val covidSchema = StructType(Array(
       StructField("continent", StringType),
       StructField("country", StringType),
@@ -47,7 +44,6 @@ class SendAPIToKafka {
       StructField("time", StringType)
     ))
 
-    // Read the data and parse the JSON response into a struct with the specified schema
     val apiData = spark.read
       .format("csv")
       .options(options)
@@ -55,7 +51,6 @@ class SendAPIToKafka {
       .select(from_json(col("value"), covidSchema).alias("data"))
       .selectExpr("data.*")
 
-    // Write the data to Kafka
     val kafkaData = apiData
       .select(to_json(struct(col("*"))).alias("value"))
       .selectExpr("CAST(value AS STRING)")
@@ -70,6 +65,5 @@ class SendAPIToKafka {
       .start()
 
     kafkaSink.awaitTermination()
-
   }
 }
