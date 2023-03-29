@@ -79,5 +79,9 @@
             <id>scalaj-http</id>
             <url>https://dl.bintray.com/scalaj/scalaj-http/</url>
         </repository>
+        <repository>
+            <id>central</id>
+            <url>https://repo.maven.apache.org/maven2</url>
+        </repository>
     </repositories>
 </project>
