@@ -1,20 +1,48 @@
 package kafka
-
-import com.github.blemale.requests._
-import com.github.blemale.requests.dsl._
-import java.util.Properties
+import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.functions._
+import org.apache.spark.sql.streaming.Trigger
 class SendAPIToKafka {
   def readFromApiAndProduceToKafka(): Unit = {
+    val spark = SparkSession.builder()
+      .appName("API Reader")
+      .master("local[*]")
+      .getOrCreate()
+
+    val endpoint = "https://covid-193.p.rapidapi.com/statistics?country=UK"
+    val options = Map(
+      "header" -> "true",
+      "delimiter" -> ","
+    )
+
     val headers = Map(
       "X-RapidAPI-Host" -> "covid-193.p.rapidapi.com",
       "X-RapidAPI-Key" -> "9a99f8903cmsh9e882a8f6e4b0cbp1f2fefjsn53f7c6e89019"
     )
 
-    val response = get("https://covid-193.p.rapidapi.com/statistics")
-      .params("country" -> "UK")
-      .headers(headers)
-      .send()
+    val apiData = spark.read
+      .format("csv")
+      .options(options)
+      .option("header", false)
+      .option("sep", ":")
+      .option("inferSchema", true)
+      .option("url", endpoint)
+      .option("header", s"${headers("X-RapidAPI-Host")}: ${headers("X-RapidAPI-Key")}") // pass in the headers as an option
+      .load()
 
-    println(response.text)
+    val kafkaData = apiData
+      .select(to_json(struct(col("*"))).alias("value"))
+      .selectExpr("CAST(value AS STRING)")
+
+    val kafkaSink = kafkaData
+      .writeStream
+      .format("kafka")
+      .option("kafka.bootstrap.servers", "ip-172-31-3-80.eu-west-2.compute.internal:9092")
+      .option("topic", "topic1")
+      .option("checkpointLocation", "/tmp/checkpoints")
+      .trigger(Trigger.ProcessingTime("30 seconds"))
+      .start()
+
+    kafkaSink.awaitTermination()
   }
 }
