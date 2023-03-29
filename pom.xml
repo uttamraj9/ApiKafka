@@ -42,7 +42,7 @@
             <plugin>
                 <groupId>org.scala-tools</groupId>
                 <artifactId>maven-scala-plugin</artifactId>
-                <version>3.2.0</version>
+                <version>2.15.2</version>
                 <executions>
                     <execution>
                         <goals>
@@ -53,7 +53,6 @@
                 </executions>
                 <configuration>
                     <scalaVersion>2.11.12</scalaVersion>
-                    <!-- other configuration options -->
                 </configuration>
             </plugin>
 
