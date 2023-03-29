@@ -69,7 +69,7 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <mainClass>spark.NewSparkJar</mainClass>
+                            <mainClass>kafka.SendMessage</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
