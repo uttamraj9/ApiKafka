@@ -1,10 +1,11 @@
+package kafka
 import org.apache.spark.sql.functions._
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.streaming.Trigger
 import org.apache.spark.sql.types._
 
-object SendAPIToKafka {
-  def main(args: Array[String]): Unit = {
+class SendAPIToKafka {
+  def readFromApiAndProduceToKafka(): Unit = {
     val spark = SparkSession.builder()
       .appName("API Reader")
       .master("local[*]")
