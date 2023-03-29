@@ -36,7 +36,14 @@
         </dependency>
 
     </dependencies>
-
+    <repositories>
+        <repository>
+            <id>sonatype-oss-public</id>
+            <url>https://oss.sonatype.org/content/groups/public/</url>
+            <releases>true</releases>
+            <snapshots>true</snapshots>
+        </repository>
+    </repositories>
     <build>
         <plugins>
             <!-- Maven Scala plugin -->
@@ -80,12 +87,5 @@
             </resource>
         </resources>
     </build>
-    <repositories>
-        <repository>
-            <id>sonatype-oss-public</id>
-            <url>https://oss.sonatype.org/content/groups/public/</url>
-            <releases>true</releases>
-            <snapshots>true</snapshots>
-        </repository>
-    </repositories>
+
 </project>
