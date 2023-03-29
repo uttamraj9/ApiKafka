@@ -10,24 +10,20 @@ class SendAPIToKafka {
       .getOrCreate()
 
     val endpoint = "https://covid-193.p.rapidapi.com/statistics?country=UK"
-    val options = Map(
-      "header" -> "true",
-      "delimiter" -> ","
-    )
-
     val headers = Map(
       "X-RapidAPI-Host" -> "covid-193.p.rapidapi.com",
       "X-RapidAPI-Key" -> "9a99f8903cmsh9e882a8f6e4b0cbp1f2fefjsn53f7c6e89019"
     )
 
+    val options = Map(
+      "delimiter" -> ":",
+      "url" -> endpoint,
+      "header_x_rapidapi" -> s"${headers("X-RapidAPI-Host")}: ${headers("X-RapidAPI-Key")}"
+    )
+
     val apiData = spark.read
       .format("csv")
       .options(options)
-      .option("header", false)
-      .option("sep", ":")
-      .option("inferSchema", true)
-      .option("url", endpoint)
-      .option("header", s"${headers("X-RapidAPI-Host")}: ${headers("X-RapidAPI-Key")}") // pass in the headers as an option
       .load()
 
     val kafkaData = apiData
