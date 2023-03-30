@@ -41,6 +41,12 @@
             <version>2.4.7</version>
             <scope>provided</scope>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/com.lihaoyi/requests -->
+        <dependency>
+            <groupId>com.lihaoyi</groupId>
+            <artifactId>requests_2.11</artifactId>
+            <version>0.8.0</version>
+        </dependency>
 
     </dependencies>
     <build>
