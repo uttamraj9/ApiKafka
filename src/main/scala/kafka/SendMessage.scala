@@ -8,5 +8,6 @@ object SendMessage {
     val url = "https://covid-193.p.rapidapi.com/statistics?country=uk"
     val sc = new SendAPIToKafka()
     sc.readFromApiAndProduceToKafka(topic, brokers, headers, url)
+    println("Test of jenkins webhook completed")
   }
 }
