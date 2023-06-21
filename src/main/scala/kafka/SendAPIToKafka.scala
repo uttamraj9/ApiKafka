@@ -22,6 +22,6 @@ class SendAPIToKafka {
     val kafka_msg = dfFromText.select(to_json(struct($"response"))).toDF("value")
 
     kafka_msg.selectExpr("value").write.format("kafka").option("kafka.bootstrap.servers", brokers).option("topic", topic).save()
-    println("Test of jenkins webhook completed")
+    println("Test of jenkins webhook completed11")
   }
 }
