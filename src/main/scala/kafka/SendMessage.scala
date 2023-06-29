@@ -9,5 +9,6 @@ object SendMessage {
     val sc = new SendAPIToKafka()
     sc.readFromApiAndProduceToKafka(topic, brokers, headers, url)
     println("Test of jenkins webhook completed11111222iufgihdfighfdg")
+    println("Test of jenkins webhook completed11111222iufgihdfighfdg")
   }
 }
